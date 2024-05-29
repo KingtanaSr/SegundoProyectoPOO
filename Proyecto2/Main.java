@@ -12,12 +12,10 @@ public class Main {
 
         Ngram ngram = new Ngram(lectorr);
 
-        tokenizador.guardarTokens();
-
         List<String> tokens = tokenizador.getListaTokens();
         //System.out.println(tokens);
 
-       GeneradorVocabulario gn = new GeneradorVocabulario(tokenizador);
+        GeneradorVocabulario gn = new GeneradorVocabulario(tokenizador);
 
         List<String> vocabulario = gn.generarVocabulario();
         //System.out.println(vocabulario);
@@ -29,9 +27,8 @@ public class Main {
         System.out.println(nGP.generarNGramProbabilidades());
 
 
-        SelecciónGeneración gdT = new SelecciónGeneración(lectorr);
+        SelectorGeneración gdT = new SelectorGeneración(lectorr);
         //System.out.println(gdT.getOpcionGeneracion());
 
     }
 }
-

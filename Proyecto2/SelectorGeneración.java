@@ -26,9 +26,9 @@ public class SelectorGeneración {
     private int obtenerOpcionCantOraciones(){
         System.out.println("Ingrese la cantidad de secuencias a generar. El valor debe estar entre 1 y 10.");
         opcionCantOraciones = lector.leerEntero();
-        if(opcionCantOraciones < 1 || opcionCantOraciones < 10){
+        if(opcionCantOraciones < 1 || opcionCantOraciones > 10){
             System.out.println("El número que ingresaste no es una de las opciones válidas");
-            return 0;
+            return opcionCantOraciones;
         }
         return opcionCantOraciones;
     }

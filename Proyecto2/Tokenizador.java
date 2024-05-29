@@ -8,24 +8,26 @@ public class Tokenizador {
     private final LectorDeArchivo lectorDeArchivo;
     private final String contenido;
     public List<String> listaTokens;
+
     public Tokenizador(LectorDeArchivo lectorDeArchivo) {
         this.lectorDeArchivo = lectorDeArchivo;
         this.contenido = lectorDeArchivo.getContenidoArchivo();
-        this.listaTokens = new ArrayList<>();
+        this.listaTokens = guardarTokens();
     }
 
-    public void guardarTokens() {
-        StringTokenizer st = new StringTokenizer(contenido, " []()*&^%$#+@-,:';¿¡!?.", true);
+    private List<String> guardarTokens() {
+        List<String> tokens = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(contenido, " []()*&^%$#+@-,:';¿¡!?.\n\r", true);
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            token = token.replace("\n", "").replace("\r", "");
-            if ((!token.equals(" ")&&(!token.trim().isEmpty()))) {
-                listaTokens.add(token);
+            token = token.trim();
+            if (!token.isEmpty()) {
+                tokens.add(token);
             }
         }
+        return tokens;
     }
     public List<String> getListaTokens() {
         return listaTokens;
     }
 }
-
