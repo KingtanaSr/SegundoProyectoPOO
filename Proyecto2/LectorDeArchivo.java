@@ -4,16 +4,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
-import java.util.Scanner;
 public class LectorDeArchivo {
     private final String rutaArchivo;
     private final Path path;
     private String contenidoArchivo = "";
-    public LectorDeArchivo() {
-        Scanner scanner = new Scanner(System.in);
+    public LectorDeArchivo(Lector lector) {
 
         System.out.print("Introduce la ruta del archivo: ");
-        rutaArchivo = scanner.nextLine();
+        rutaArchivo = lector.leerCadena();
 
         path = Paths.get(rutaArchivo);
         try {
@@ -22,7 +20,6 @@ public class LectorDeArchivo {
             e.printStackTrace();
         }
 
-        scanner.close();
     }
     public String getContenidoArchivo() {
         return contenidoArchivo;

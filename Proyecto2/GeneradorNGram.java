@@ -15,6 +15,7 @@ public class GeneradorNGram {
 
     public List<List<String>> generarNGram() {
         int n = ngram.getTamañoNgram();
+
         List<String> tokens = tokenizador.getListaTokens();
 
         for (int i = 0; i < n - 1; i++) {
