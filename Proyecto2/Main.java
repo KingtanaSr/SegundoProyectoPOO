@@ -12,23 +12,25 @@ public class Main {
 
         Ngram ngram = new Ngram(lectorr);
 
-        List<String> tokens = tokenizador.getListaTokens();
-        //System.out.println(tokens);
+        List<String> tokens = tokenizador.guardarTokens(lector.getContenidoArchivo());
+        System.out.println(tokens);
 
-        GeneradorVocabulario gn = new GeneradorVocabulario(tokenizador);
+        GeneradorVocabulario gn = new GeneradorVocabulario(tokenizador, lector);
 
         List<String> vocabulario = gn.generarVocabulario();
         //System.out.println(vocabulario);
 
-        GeneradorNGram nG = new GeneradorNGram(tokenizador, ngram);
-        System.out.println(nG.generarNGram());
+        //GeneradorNGram nG = new GeneradorNGram(tokenizador, ngram,lector);
+        //System.out.println(nG.generarNGram());
 
-        GeneradorNgramProbabilidades nGP = new GeneradorNgramProbabilidades(tokenizador,ngram);
-        System.out.println(nGP.generarNGramProbabilidades());
+        GeneradorNgramProbabilidades nGP = new GeneradorNgramProbabilidades(tokenizador,ngram,lector);
+        //System.out.println(nGP.generarNGramProbabilidades());
 
 
-        SelectorGeneración gdT = new SelectorGeneración(lectorr);
+        //SelectorGeneración gdT = new SelectorGeneración(lectorr);
         //System.out.println(gdT.getOpcionGeneracion());
+
+        GeneradorTextoNoDeterminístico GTND = new GeneradorTextoNoDeterminístico(lectorr,nGP,gn,tokenizador);
 
     }
 }

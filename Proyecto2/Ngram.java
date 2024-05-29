@@ -10,8 +10,7 @@ public class Ngram {
     }
 
     private int obtenerTamañoNgram() {
-        System.out.println("Ingrese el tamaño del n-gram, el número debe estar entre 2 y 10: ");
-
+        System.out.print("Ingrese el tamaño del n-gram, el número debe estar entre 2 y 10: ");
         tam = lector.leerEntero();
 
         if (tam < 2 || tam > 10) {

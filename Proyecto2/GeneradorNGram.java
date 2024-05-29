@@ -8,7 +8,10 @@ public class GeneradorNGram {
 
     private final Ngram ngram;
 
-    public GeneradorNGram(Tokenizador tokenizador, Ngram ngram) {
+    private final LectorDeArchivo lectorDeArchivo;
+
+    public GeneradorNGram(Tokenizador tokenizador, Ngram ngram, LectorDeArchivo lectorDeArchivo) {
+        this.lectorDeArchivo = lectorDeArchivo;
         this.tokenizador = tokenizador;
         this.ngram = ngram;
     }
@@ -16,7 +19,7 @@ public class GeneradorNGram {
     public List<List<String>> generarNGram() {
         int n = ngram.getTamañoNgram();
 
-        List<String> tokens = tokenizador.getListaTokens();
+        List<String> tokens = tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo());
 
         for (int i = 0; i < n - 1; i++) {
             tokens.add("<EOS>");

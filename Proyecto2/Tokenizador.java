@@ -12,10 +12,10 @@ public class Tokenizador {
     public Tokenizador(LectorDeArchivo lectorDeArchivo) {
         this.lectorDeArchivo = lectorDeArchivo;
         this.contenido = lectorDeArchivo.getContenidoArchivo();
-        this.listaTokens = guardarTokens();
+        this.listaTokens = guardarTokens(contenido);
     }
 
-    private List<String> guardarTokens() {
+    public List<String> guardarTokens(String contenido) {
         List<String> tokens = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(contenido, " []()*&^%$#+@-,:';¿¡!?.\n\r", true);
         while (st.hasMoreTokens()) {
@@ -27,7 +27,5 @@ public class Tokenizador {
         }
         return tokens;
     }
-    public List<String> getListaTokens() {
-        return listaTokens;
-    }
+
 }

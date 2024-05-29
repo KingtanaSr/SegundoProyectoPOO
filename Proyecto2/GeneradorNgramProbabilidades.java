@@ -6,14 +6,17 @@ public class GeneradorNgramProbabilidades {
     private final Tokenizador tokenizador;
     private final Ngram ngram;
 
-    public GeneradorNgramProbabilidades(Tokenizador tokenizador, Ngram ngram){
+    private final LectorDeArchivo lectorDeArchivo;
+
+    public GeneradorNgramProbabilidades(Tokenizador tokenizador, Ngram ngram, LectorDeArchivo lectorDeArchivo){
+        this.lectorDeArchivo = lectorDeArchivo;
         this.tokenizador = tokenizador;
         this.ngram = ngram;
     }
 
     public Map<List<String>, Map<String, Double>> generarNGramProbabilidades() {
         int n = ngram.getTamañoNgram();
-        List<String> tokens = new LinkedList<>(tokenizador.getListaTokens());
+        List<String> tokens = new LinkedList<>(tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo()));
 
         for (int i = 0; i < n - 1; i++) {
             tokens.add("<EOS>");
