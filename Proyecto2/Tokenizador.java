@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Tokenizador {
-    private final LectorDeArchivo lector;
+    private final LectorDeArchivo lectorDeArchivo;
     private final String contenido;
     public List<String> listaTokens;
-    public Tokenizador(LectorDeArchivo lector) {
-        this.lector = lector;
-        this.contenido = lector.getContenidoArchivo();
+    public Tokenizador(LectorDeArchivo lectorDeArchivo) {
+        this.lectorDeArchivo = lectorDeArchivo;
+        this.contenido = lectorDeArchivo.getContenidoArchivo();
         this.listaTokens = new ArrayList<>();
     }
 
