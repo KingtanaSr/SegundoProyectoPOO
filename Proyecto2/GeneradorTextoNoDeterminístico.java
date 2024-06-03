@@ -1,20 +1,28 @@
 package Proyecto2;
+import java.util.Collections;
 import java.util.List;
-public class GeneradorTextoNoDeterminístico {
-    private Lector lector;
-    private GeneradorNgramProbabilidades generadorNgramProbabilidades;
-    private GeneradorVocabulario generadorVocabulario;
-    private Tokenizador tokenizador;
-    public GeneradorTextoNoDeterminístico(Lector lector,GeneradorNgramProbabilidades generadorNgramProbabilidades,GeneradorVocabulario generadorVocabulario,Tokenizador tokenizador){
-        this.lector = lector;
-        this.generadorNgramProbabilidades = generadorNgramProbabilidades;
-        this.generadorVocabulario = generadorVocabulario;
-        this.tokenizador = tokenizador;
+import java.util.Random;
+public class GeneradorTextoNoDeterminístico extends GeneradorTexto {
+    public GeneradorTextoNoDeterminístico(SelectorGeneración selectorGeneración, Lector lector, GeneradorNgramProbabilidades generadorNgramProbabilidades, GeneradorVocabulario generadorVocabulario, Tokenizador tokenizador, Ngram ngram) {
+        super(selectorGeneración, lector, generadorNgramProbabilidades, generadorVocabulario, tokenizador, ngram);
     }
-    public List<String> generadorTextoND(){
-        System.out.print("Ingrese el texto de inicio: ");
-        String input= lector.leerCadena();
-        List<String> lista = tokenizador.guardarTokens(input);
+
+    public List<String> generadorTextoND() {
+       List<String> lista = recibirEntradasTexto();
+            while (selectorGeneración.getOpcionGeneracion() == 2) {
+                while (lista.size() != ngram.getTamañoNgram() - 1) {
+                    lista.addFirst("<BOS>");
+                }
+                /*if (generadorNgramProbabilidades.buscarTokensSiguientes(lista).isEmpty()) {
+                    Random random = new Random();
+                    List<String> vocabulario = generadorVocabulario.generarVocabulario();
+                    int indiceAleatorio = random.nextInt(vocabulario.size());
+                    lista.add(vocabulario.get(indiceAleatorio));
+                }*/
+                System.out.println(generadorNgramProbabilidades.buscarTokensSiguientes(lista));
+            }
         return lista;
     }
+
 }
+

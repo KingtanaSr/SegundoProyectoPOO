@@ -43,7 +43,14 @@ public class GeneradorNgramProbabilidades {
             }
             nGramProbabilidades.put(nGramKey, tokenProbabilidades);
         }
-
         return nGramProbabilidades;
     }
+
+    public Map<String, Double> buscarTokensSiguientes(List<String> nGramKey) {
+        Map<List<String>, Map<String, Double>> nGramProbabilidades = generarNGramProbabilidades();
+        Map<String, Double> tokenProbabilidades = nGramProbabilidades.getOrDefault(nGramKey, Collections.emptyMap());
+        return tokenProbabilidades;
+    }
+
+
 }

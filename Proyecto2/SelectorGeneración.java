@@ -5,18 +5,21 @@ public class SelectorGeneración {
 
     private int opcionCantOraciones;
 
+    private int opcionTamMaximo;
+
     private final Lector lector;
 
     public SelectorGeneración(Lector lector) {
         this.lector = lector;
         this.opcionGeneracion = obtenerOpcionGeneracion();
         this.opcionCantOraciones = obtenerOpcionCantOraciones();
+        this.opcionTamMaximo = obtenerTamMaximoSecuencia();
     }
 
     private int obtenerOpcionGeneracion() {
         System.out.println("Ingrese un 1 si desea que la generación sea determinística y un 2 si desea que sea no determinística");
         opcionGeneracion = lector.leerEntero();
-        if(opcionGeneracion!=1 && opcionCantOraciones!=2){
+        if(opcionGeneracion!=1 && opcionGeneracion!=2){
             System.out.println("El número que ingresaste no es una de las opciones válidas");
             return 0;
         }
@@ -28,9 +31,20 @@ public class SelectorGeneración {
         opcionCantOraciones = lector.leerEntero();
         if(opcionCantOraciones < 1 || opcionCantOraciones > 10){
             System.out.println("El número que ingresaste no es una de las opciones válidas");
-            return opcionCantOraciones;
+            return 0;
         }
         return opcionCantOraciones;
+    }
+
+
+    private int obtenerTamMaximoSecuencia(){
+        System.out.println("Ingrese el tamano maximo de las secuencias a generar: ");
+        opcionTamMaximo = lector.leerEntero();
+        if(opcionTamMaximo > 1000){
+            System.out.println("El tamano máximo de las secuencias que ingresaste supera el límite establecido");
+            return 0;
+        }
+        return opcionTamMaximo;
     }
 
     public int getOpcionGeneracion() {
@@ -39,6 +53,10 @@ public class SelectorGeneración {
 
     public int getOpcionCantOraciones(){
         return opcionCantOraciones;
+    }
+
+    public int getOpcionTamMaximo(){
+        return opcionTamMaximo;
     }
 
 }
