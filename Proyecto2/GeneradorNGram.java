@@ -21,10 +21,6 @@ public class GeneradorNGram {
 
         List<String> tokens = tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo());
 
-        for (int i = 0; i < n - 1; i++) {
-            tokens.add("<EOS>");
-            tokens.addFirst("<BOS>");
-        }
 
         List<List<String>> nGrams = new ArrayList<>();
 

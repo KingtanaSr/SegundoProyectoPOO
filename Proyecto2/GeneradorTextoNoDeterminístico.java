@@ -3,8 +3,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 public class GeneradorTextoNoDeterminístico extends GeneradorTexto {
-    public GeneradorTextoNoDeterminístico(SelectorGeneración selectorGeneración, Lector lector, GeneradorNgramProbabilidades generadorNgramProbabilidades, GeneradorVocabulario generadorVocabulario, Tokenizador tokenizador, Ngram ngram) {
-        super(selectorGeneración, lector, generadorNgramProbabilidades, generadorVocabulario, tokenizador, ngram);
+    public GeneradorTextoNoDeterminístico(SelectorGeneración selectorGeneración, LectorDeEntrada lectorDeEntrada, GeneradorNgramProbabilidades generadorNgramProbabilidades, GeneradorVocabulario generadorVocabulario, Tokenizador tokenizador, Ngram ngram) {
+        super(selectorGeneración, lectorDeEntrada, generadorNgramProbabilidades, generadorVocabulario, tokenizador, ngram);
     }
 
     public List<String> generadorTextoND() {

@@ -18,10 +18,6 @@ public class GeneradorNgramProbabilidades {
         int n = ngram.getTamañoNgram();
         List<String> tokens = new LinkedList<>(tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo()));
 
-        for (int i = 0; i < n - 1; i++) {
-            tokens.add("<EOS>");
-            tokens.addFirst("<BOS>");
-        }
 
         Map<List<String>, Map<String, Integer>> nGramFrecuencias = new LinkedHashMap<>();
 

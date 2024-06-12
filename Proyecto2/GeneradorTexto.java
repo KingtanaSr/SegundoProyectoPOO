@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GeneradorTexto {
-    public final Lector lector;
+    public final LectorDeEntrada lectorDeEntrada;
     public final GeneradorNgramProbabilidades generadorNgramProbabilidades;
     public final GeneradorVocabulario generadorVocabulario;
     public final Tokenizador tokenizador;
@@ -12,8 +12,8 @@ public class GeneradorTexto {
     public final SelectorGeneración selectorGeneración;
 
 
-    public GeneradorTexto(SelectorGeneración selectorGeneración, Lector lector,GeneradorNgramProbabilidades generadorNgramProbabilidades,GeneradorVocabulario generadorVocabulario,Tokenizador tokenizador, Ngram ngram){
-        this.lector = lector;
+    public GeneradorTexto(SelectorGeneración selectorGeneración, LectorDeEntrada lectorDeEntrada,GeneradorNgramProbabilidades generadorNgramProbabilidades,GeneradorVocabulario generadorVocabulario,Tokenizador tokenizador, Ngram ngram){
+        this.lectorDeEntrada = lectorDeEntrada;
         this.generadorNgramProbabilidades = generadorNgramProbabilidades;
         this.generadorVocabulario = generadorVocabulario;
         this.tokenizador = tokenizador;
@@ -22,8 +22,21 @@ public class GeneradorTexto {
     }
 
 
-    public void imprimirTexto(){
 
+    public void imprimirTexto(List<String> listaTexto){
+        for(String palabra : listaTexto){
+            if (palabra.equals("<EOS>")){
+                break;
+            }
+            System.out.print(palabra + " ");
+            try {
+                Thread.sleep(1000); // Pausa de 1 segundo (1000 milisegundos)
+            } catch (InterruptedException e) {
+                // Manejar la excepción en caso de que el hilo sea interrumpido
+                Thread.currentThread().interrupt();
+                System.err.println("El hilo fue interrumpido: " + e.getMessage());
+            }
+        }
     }
 
     public int recibirEntradaGeneracion(){
@@ -41,7 +54,7 @@ public class GeneradorTexto {
 
     public List<String> recibirEntradasTexto(){
         System.out.print("Ingrese el texto de inicio: ");
-        String input = lector.leerCadena();
+        String input = lectorDeEntrada.leerCadena();
         List<String> lista = tokenizador.guardarTokens(input);
         return lista;
     }
@@ -52,6 +65,7 @@ public class GeneradorTexto {
             List<String> vocabulario = generadorVocabulario.generarVocabulario();
             int indiceAleatorio = random.nextInt(vocabulario.size());
             inputUsuario.add(vocabulario.get(indiceAleatorio));
+
         }
         return inputUsuario;
     }

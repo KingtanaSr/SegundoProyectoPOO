@@ -14,8 +14,9 @@ public class GeneradorVocabulario {
     public List<String> generarVocabulario() {
         List<String> tokens = tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo());
         Set<String> set = new LinkedHashSet<>(tokens);
+        set.remove("<EOS>");
+        set.remove("<BOS>");
         return new ArrayList<>(set);
     }
-
 }
 
