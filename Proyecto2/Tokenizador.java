@@ -18,7 +18,7 @@ public class Tokenizador {
     // método para guardar los tokens, recibe el contenido del archivo
     public List<String> guardarTokens(String contenido) {
         List<String> tokens = new ArrayList<>(); // lista para almacenar los tokens
-        StringTokenizer st = new StringTokenizer(contenido, " []()*&^%$#+@-,:';¿¡!?.\n\r", true); // usando la biblioteca "StringTokenizer", se establece los límites de los tokens
+        StringTokenizer st = new StringTokenizer(contenido, " []()*&^%$#+@-,:';¿¡!?—.\n\r", true); // usando la biblioteca "StringTokenizer", se establece los límites de los tokens
         while (st.hasMoreTokens()) {
             String token = st.nextToken();
             token = token.trim(); // en este while se verifica que hay más tokens, se recorre y se guarda en la lista mientras que el token no es vacío

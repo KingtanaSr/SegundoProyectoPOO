@@ -1,7 +1,4 @@
 package Proyecto2;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GPTec {
 
@@ -22,14 +19,12 @@ public class GPTec {
 
         SelectorGeneración gdT = new SelectorGeneración(lectorr);
 
-        //GeneradorTextoNoDeterminístico GTND = new GeneradorTextoNoDeterminístico(gdT,lectorr,nGP,gn,tokenizador,ngram);
-        //GTND.generadorTextoND();
+        ManipuladorTexto mT = new ManipuladorTexto();
 
-        //GeneradorTextoDeterminístico GTD = new GeneradorTextoDeterminístico(gdT,lectorr,nGP,gn,tokenizador,ngram);
-        //GTD.generadorTextoD();
+        SelectorPalabraSiguiente SP = new SelectorPalabraSiguiente(nGP,gn);
 
-        GeneradorTexto1 GT = new GeneradorTexto1(gdT,lectorr,nGP,gn,tokenizador,ngram);
-        GT.generadorTextoGeneral();
+        GeneradorTexto GT = new GeneradorTexto(gdT,lectorr,nGP,gn,tokenizador,ngram,mT, SP);
+        GT.generarTexto();
 
     }
 }
