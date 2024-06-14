@@ -5,10 +5,9 @@ import java.util.*;
 public class GeneradorNgramProbabilidades {
     private final Tokenizador tokenizador;
     private final Ngram ngram;
-
     private final LectorDeArchivo lectorDeArchivo;
 
-    public GeneradorNgramProbabilidades(Tokenizador tokenizador, Ngram ngram, LectorDeArchivo lectorDeArchivo){
+    public GeneradorNgramProbabilidades(Tokenizador tokenizador, Ngram ngram, LectorDeArchivo lectorDeArchivo) {
         this.lectorDeArchivo = lectorDeArchivo;
         this.tokenizador = tokenizador;
         this.ngram = ngram;
@@ -18,14 +17,21 @@ public class GeneradorNgramProbabilidades {
         int n = ngram.getTamañoNgram();
         List<String> tokens = new LinkedList<>(tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo()));
 
-
         Map<List<String>, Map<String, Integer>> nGramFrecuencias = new LinkedHashMap<>();
 
-        for (int i = 0; i <= tokens.size() - n; i++) {
-            List<String> nGramKey = tokens.subList(i, i + n - 1);
-            String nextToken = tokens.get(i + n - 1);
-            nGramFrecuencias.putIfAbsent(nGramKey, new LinkedHashMap<>());
-            nGramFrecuencias.get(nGramKey).put(nextToken, nGramFrecuencias.get(nGramKey).getOrDefault(nextToken, 0) + 1);
+        LinkedList<String> nGramQueue = new LinkedList<>();
+        for (int i = 0; i < tokens.size(); i++) {
+            if (i >= n - 1) {
+                List<String> nGramKey = new ArrayList<>(nGramQueue);
+                String nextToken = tokens.get(i);
+
+                nGramFrecuencias.putIfAbsent(nGramKey, new LinkedHashMap<>());
+                Map<String, Integer> nextTokenMap = nGramFrecuencias.get(nGramKey);
+                nextTokenMap.put(nextToken, nextTokenMap.getOrDefault(nextToken, 0) + 1);
+
+                nGramQueue.poll();
+            }
+            nGramQueue.offer(tokens.get(i));
         }
 
         Map<List<String>, Map<String, Double>> nGramProbabilidades = new LinkedHashMap<>();
@@ -33,6 +39,7 @@ public class GeneradorNgramProbabilidades {
             List<String> nGramKey = entry.getKey();
             Map<String, Integer> tokenFrecuencias = entry.getValue();
             int totalFrecuencias = tokenFrecuencias.values().stream().mapToInt(Integer::intValue).sum();
+
             Map<String, Double> tokenProbabilidades = new LinkedHashMap<>();
             for (Map.Entry<String, Integer> tokenEntry : tokenFrecuencias.entrySet()) {
                 tokenProbabilidades.put(tokenEntry.getKey(), (double) tokenEntry.getValue() / totalFrecuencias);

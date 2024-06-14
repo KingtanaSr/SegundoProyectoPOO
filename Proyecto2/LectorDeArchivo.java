@@ -11,9 +11,9 @@ public class LectorDeArchivo {
     public LectorDeArchivo(LectorDeEntrada lector) {
 
         System.out.print("Introduce la ruta del archivo: ");
-        rutaArchivo = lector.leerCadena();
+        rutaArchivo = lector.leerCadena(); // se lee el nombre del archivo
 
-        path = Paths.get(rutaArchivo);
+        path = Paths.get(rutaArchivo); // se convierte en ruta
         try {
             contenidoArchivo = Files.readString(path);
         } catch (IOException e) {
@@ -21,23 +21,24 @@ public class LectorDeArchivo {
         }
 
     }
+    //método que tiene el objetivo añadir "<BOS>" y "<EOS>" al inicio de cada párrafo
     public void modificarContenido(int tam) {
-        String[] lineas = contenidoArchivo.split("\\R");
+        String[] lineas = contenidoArchivo.split("\\R"); // se establece que se divida cada cambio de línea
 
-        StringBuilder contenidoConBOSyEOS = new StringBuilder();
+        StringBuilder contenidoModificado = new StringBuilder(); // se crea un objeto de tipo StringBuilder
 
-        for (String linea : lineas) {
+        for (String linea : lineas) { // por cada línea en la listas de líneas
             for (int i = 0; i < tam; i++) {
-                contenidoConBOSyEOS.append("<BOS> ");
+                contenidoModificado.append("<BOS> "); //se añade "<BOS>"
             }
-            contenidoConBOSyEOS.append(linea);
+            contenidoModificado.append(linea);
             for (int i = 0; i < tam; i++) {
-                contenidoConBOSyEOS.append(" <EOS>");
+                contenidoModificado.append(" <EOS>"); //se añade "<EOS>"
             }
-            contenidoConBOSyEOS.append("\n");
+            contenidoModificado.append("\n");
         }
 
-        contenidoArchivo = contenidoConBOSyEOS.toString().trim();
+        contenidoArchivo = contenidoModificado.toString().trim();
 
     }
 

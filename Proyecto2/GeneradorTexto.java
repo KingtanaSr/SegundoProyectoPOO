@@ -22,7 +22,7 @@ public class GeneradorTexto {
     }
 
 
-
+    //método para imprimir las secuencias generadas
     public void imprimirTexto(List<String> listaTexto){
         for(String palabra : listaTexto){
             if (palabra.equals("<EOS>")){
@@ -32,7 +32,6 @@ public class GeneradorTexto {
             try {
                 Thread.sleep(1000); // Pausa de 1 segundo (1000 milisegundos)
             } catch (InterruptedException e) {
-                // Manejar la excepción en caso de que el hilo sea interrumpido
                 Thread.currentThread().interrupt();
                 System.err.println("El hilo fue interrumpido: " + e.getMessage());
             }
@@ -69,4 +68,11 @@ public class GeneradorTexto {
         }
         return inputUsuario;
     }
+
+    public void agregarBOS(List<String> lista){
+        while (lista.size() != ngram.getTamañoNgram() - 1) {
+            lista.add(0, "<BOS>");
+        }
+    }
+
 }

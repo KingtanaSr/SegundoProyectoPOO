@@ -8,31 +8,27 @@ public class GeneradorTextoDeterminístico extends GeneradorTexto{
     }
 
     public List<String> generadorTextoD() {
-        List<String> guardaTextos = new ArrayList<>();
+        List<String> guardaTextos = new ArrayList<>(); // lista para guardar las secuencias creadas
         if (recibirEntradaGeneracion() == 1) {
             int cantOraciones = recibirEntradaCantOraciones();
             while (cantOraciones > 0) {
                 List<String> entradaTexto = recibirEntradasTexto();
-
-                while (entradaTexto.size() != ngram.getTamañoNgram() - 1) {
-                    entradaTexto.add(0, "<BOS>");
-                }
+                agregarBOS(entradaTexto);
                 int maximoPalabras = recibirEntradaMaximoPalabras();
                 while (maximoPalabras > 0) {
-                 // if (recibirEntradaGeneracion() == 1){
                     Map<String, Double> mapaPalabra = generadorNgramProbabilidades.buscarTokensSiguientes(entradaTexto);
-                    String maxPalProb = mapaPalabra.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null);
+                    String maxPalProb = mapaPalabra.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null); // String para la palabra más probable
                     if(maxPalProb != null) {
-                        entradaTexto.add(maxPalProb);
-                        guardaTextos.add(entradaTexto.get(ngram.getTamañoNgram() - 1));
-                        if(maxPalProb.equals("<EOS>")){
+                        entradaTexto.add(maxPalProb); // agrega al texto que se está generando la palabra que más aparece
+                        guardaTextos.add(entradaTexto.get(ngram.getTamañoNgram() - 1)); // se obtiene el contenido de entradaTexto y se almacena en guardaTextos
+                        if(maxPalProb.equals("<EOS>")){ // si se llega a que la palabra más probable es "<EOS>" se termina
                             break;
                         }
-                        entradaTexto.remove(0);
+                        entradaTexto.remove(0); // se recorta
                     }else {
-                        entradaTexto = generarNumRandParaPalSiguiente(entradaTexto);
-                        guardaTextos.add(entradaTexto.get(ngram.getTamañoNgram() - 1));
-                        entradaTexto.remove(0);
+                        entradaTexto = generarNumRandParaPalSiguiente(entradaTexto); // por si se ingresa una secuencia que no existe en el texto
+                        guardaTextos.add(entradaTexto.get(ngram.getTamañoNgram() - 1)); // se obtiene el contenido de entradaTexto y se almacena en guardaTextos
+                        entradaTexto.remove(0); // se recorta
                     }
                     //} else{
                     // }
@@ -45,7 +41,6 @@ public class GeneradorTextoDeterminístico extends GeneradorTexto{
                 guardaTextos.clear();
                 
             }
-
         }
         return guardaTextos;
     }
