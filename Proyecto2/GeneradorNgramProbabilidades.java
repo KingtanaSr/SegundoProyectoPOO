@@ -14,39 +14,41 @@ public class GeneradorNgramProbabilidades {
     }
 
     public Map<List<String>, Map<String, Double>> generarNGramProbabilidades() {
-        int n = ngram.getTamañoNgram();
-        List<String> tokens = new LinkedList<>(tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo()));
+        int tamañoNgram = ngram.getTamañoNgram(); // se obtiene el tamaño del n-gram que se desea usar.
+        List<String> tokens = tokenizador.guardarTokens(lectorDeArchivo.getContenidoArchivo()); // convierte el contenido del archivo en una lista de tokens
 
-        Map<List<String>, Map<String, Integer>> nGramFrecuencias = new LinkedHashMap<>();
-
-        LinkedList<String> nGramQueue = new LinkedList<>();
+        Map<List<String>, Map<String, Integer>> nGramFrecuencias = new LinkedHashMap<>(); // almacena la frecuencia de aparición de cada n-gram junto con la frecuencia de aparición del siguiente token
+        LinkedList<String> colaNgram = new LinkedList<>(); // utiliza una cola para construir los n-grams dinámicamente a medida que se procesa la lista de tokens.
+        // recorre los tokens y construye n-grams
+        // cuando hay suficiente cantidad de tokens para formar un n-gram, se agrega el n-gram actual y su siguiente token al mapa de frecuencias
         for (int i = 0; i < tokens.size(); i++) {
-            if (i >= n - 1) {
-                List<String> nGramKey = new ArrayList<>(nGramQueue);
+            if (i >= tamañoNgram - 1) {
+                List<String> palabra = new ArrayList<>(colaNgram);
                 String nextToken = tokens.get(i);
 
-                nGramFrecuencias.putIfAbsent(nGramKey, new LinkedHashMap<>());
-                Map<String, Integer> nextTokenMap = nGramFrecuencias.get(nGramKey);
-                nextTokenMap.put(nextToken, nextTokenMap.getOrDefault(nextToken, 0) + 1);
+                nGramFrecuencias.putIfAbsent(palabra, new LinkedHashMap<>());
+                Map<String, Integer> siguienteToken = nGramFrecuencias.get(palabra);
+                siguienteToken.put(nextToken, siguienteToken.getOrDefault(nextToken, 0) + 1);
 
-                nGramQueue.poll();
+                colaNgram.poll(); // elimina el primer elemento de la cola
             }
-            nGramQueue.offer(tokens.get(i));
+            colaNgram.offer(tokens.get(i)); //añade el token actual al final de la cola.
         }
 
+        // recorre el mapa de frecuencias y calcula la probabilidad de aparición de cada token dado un n-gram
         Map<List<String>, Map<String, Double>> nGramProbabilidades = new LinkedHashMap<>();
-        for (Map.Entry<List<String>, Map<String, Integer>> entry : nGramFrecuencias.entrySet()) {
-            List<String> nGramKey = entry.getKey();
-            Map<String, Integer> tokenFrecuencias = entry.getValue();
+        for (Map.Entry<List<String>, Map<String, Integer>> valor : nGramFrecuencias.entrySet()) {
+            List<String> nGramPalabra = valor.getKey();
+            Map<String, Integer> tokenFrecuencias = valor.getValue();
             int totalFrecuencias = tokenFrecuencias.values().stream().mapToInt(Integer::intValue).sum();
 
             Map<String, Double> tokenProbabilidades = new LinkedHashMap<>();
-            for (Map.Entry<String, Integer> tokenEntry : tokenFrecuencias.entrySet()) {
-                tokenProbabilidades.put(tokenEntry.getKey(), (double) tokenEntry.getValue() / totalFrecuencias);
+            for (Map.Entry<String, Integer> token : tokenFrecuencias.entrySet()) {
+                tokenProbabilidades.put(token.getKey(), (double) token.getValue() / totalFrecuencias);
             }
-            nGramProbabilidades.put(nGramKey, tokenProbabilidades);
+            nGramProbabilidades.put(nGramPalabra, tokenProbabilidades);
         }
-        return nGramProbabilidades;
+        return nGramProbabilidades; // devuelve el mapa que asocia a cada n-gram con un mapa de probabilidades para los tokens que le siguen.
     }
 
     public Map<String, Double> buscarTokensSiguientes(List<String> nGramKey) {

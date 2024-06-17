@@ -3,7 +3,7 @@ package Proyecto2;
 import java.util.Scanner;
 
 public class LectorDeEntrada {
-    private Scanner scanner;
+    private final Scanner scanner;
     public LectorDeEntrada() {
         this.scanner = new Scanner(System.in);
     }

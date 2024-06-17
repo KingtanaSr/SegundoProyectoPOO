@@ -2,29 +2,30 @@ package Proyecto2;
 
 public class GPTec {
 
-    public static void main(String[] args) {
-        LectorDeEntrada lectorr = new LectorDeEntrada();
+    public static void main(String[] args) throws DimensionInvalida {
 
-        LectorDeArchivo lector = new LectorDeArchivo(lectorr);
+        LectorDeEntrada lectorDeEntrada = new LectorDeEntrada();
 
-        Ngram ngram = new Ngram(lectorr);
+        LectorDeArchivo lectorDeArchivo = new LectorDeArchivo(lectorDeEntrada);
 
-        lector.modificarContenido(ngram.getTamañoNgram()-1);
+        Ngram ngram = new Ngram(lectorDeEntrada);
 
-        Tokenizador tokenizador = new Tokenizador(lector);
+        lectorDeArchivo.modificarContenido(ngram.getTamañoNgram()-1);
 
-        GeneradorVocabulario gn = new GeneradorVocabulario(tokenizador, lector);
+        Tokenizador tokenizador = new Tokenizador(lectorDeArchivo);
 
-        GeneradorNgramProbabilidades nGP = new GeneradorNgramProbabilidades(tokenizador,ngram,lector);
+        GeneradorVocabulario generadorVocabulario = new GeneradorVocabulario(tokenizador, lectorDeArchivo);
 
-        SelectorGeneración gdT = new SelectorGeneración(lectorr);
+        GeneradorNgramProbabilidades generadorNgramProbabilidades = new GeneradorNgramProbabilidades(tokenizador,ngram, lectorDeArchivo);
 
-        ManipuladorTexto mT = new ManipuladorTexto();
+        SelectorGeneración selectorGeneración = new SelectorGeneración(lectorDeEntrada);
 
-        SelectorPalabraSiguiente SP = new SelectorPalabraSiguiente(nGP,gn);
+        ManipuladorTexto manipuladorTexto = new ManipuladorTexto();
 
-        GeneradorTexto GT = new GeneradorTexto(gdT,lectorr,nGP,gn,tokenizador,ngram,mT, SP);
-        GT.generarTexto();
+        SelectorPalabraSiguiente selectorPalabraSiguiente = new SelectorPalabraSiguiente(generadorNgramProbabilidades, generadorVocabulario);
+
+        GeneradorTexto generadorTexto = new GeneradorTexto(selectorGeneración,lectorDeEntrada, generadorNgramProbabilidades,tokenizador,ngram, manipuladorTexto, selectorPalabraSiguiente);
+        generadorTexto.generarTexto();
 
     }
 }

@@ -1,6 +1,7 @@
 package Proyecto2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import java.util.Map;
 public class GeneradorTexto {
     private final LectorDeEntrada lectorDeEntrada;
     private final GeneradorNgramProbabilidades generadorNgramProbabilidades;
-    private final GeneradorVocabulario generadorVocabulario;
     private final Tokenizador tokenizador;
     private final Ngram ngram;
     private final SelectorGeneración selectorGeneración;
@@ -16,10 +16,9 @@ public class GeneradorTexto {
     private final SelectorPalabraSiguiente selectorPalabraSiguiente;
 
 
-    public GeneradorTexto(SelectorGeneración selectorGeneración, LectorDeEntrada lectorDeEntrada,GeneradorNgramProbabilidades generadorNgramProbabilidades,GeneradorVocabulario generadorVocabulario,Tokenizador tokenizador, Ngram ngram, ManipuladorTexto manipuladorTexto, SelectorPalabraSiguiente selectorPalabraSiguiente){
+    public GeneradorTexto(SelectorGeneración selectorGeneración, LectorDeEntrada lectorDeEntrada,GeneradorNgramProbabilidades generadorNgramProbabilidades,Tokenizador tokenizador, Ngram ngram, ManipuladorTexto manipuladorTexto, SelectorPalabraSiguiente selectorPalabraSiguiente){
         this.lectorDeEntrada = lectorDeEntrada;
         this.generadorNgramProbabilidades = generadorNgramProbabilidades;
-        this.generadorVocabulario = generadorVocabulario;
         this.tokenizador = tokenizador;
         this.ngram = ngram;
         this.selectorGeneración = selectorGeneración;
@@ -47,7 +46,7 @@ public class GeneradorTexto {
 
     public List<String> generarTexto(){
         List<String> guardaTextos = new ArrayList<>(); // lista para guardar las secuencias creadas
-        String maxPalProb;
+         String maxPalProb;
             int cantOraciones = recibirEntradaCantOraciones();
             while (cantOraciones > 0) {
                 List<String> entradaTexto = recibirEntradasTexto();
@@ -56,7 +55,7 @@ public class GeneradorTexto {
                 while (maximoPalabras > 0) {
                     if (recibirEntradaGeneracion() == 1) {
                         Map<String, Double> mapaPalabra = generadorNgramProbabilidades.buscarTokensSiguientes(entradaTexto);
-                        maxPalProb = mapaPalabra.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null); // String para la palabra más probable
+                        maxPalProb = mapaPalabra.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null); // string para la palabra más probable
                     } else {
                         maxPalProb = selectorPalabraSiguiente.seleccionarPalProb(generadorNgramProbabilidades, entradaTexto); // se selecciona la palabra siguiente segun las probabilidades
                     }

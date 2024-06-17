@@ -3,6 +3,7 @@ package Proyecto2;
 import java.util.List;
 
 public class ManipuladorTexto {
+    //método para agregar '<BOS>' al inicio de la secuencia, si esta no tiene una longitud igual a n-1
     public void agregarBOS(List<String> lista, int tam){
         while (lista.size() != tam) {
             lista.addFirst( "<BOS>");
